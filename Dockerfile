@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-ENV AWS_REGION=$AWS_REGION AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+RUN echo $AWS_REGION
 
 RUN apt-get update && apt-get install -y curl jq zip
 
