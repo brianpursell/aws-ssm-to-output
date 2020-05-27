@@ -7,6 +7,8 @@ if [[ -z "$AWS_REGION" ]] || [[ -z "$AWS_ACCESS_KEY_ID" ]] || [[ -z "$AWS_SECRET
   exit 1
 fi
 
+echo $AWS_REGION
+
 if [[ -z "$INPUT_PARAMETER_NAME" ]]; then
   echo "Set SSM parameter name (parameter_name) value."
   exit 1
