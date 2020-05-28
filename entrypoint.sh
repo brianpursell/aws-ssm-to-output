@@ -19,10 +19,12 @@ simple_json="$INPUT_SIMPLE_JSON"
 
 
 echo -e "before\n"
-ssm_param="aws ssm get-parameter --name $parameter_name"
+cmd="aws ssm get-parameter --name $parameter_name"
+echo $cmd
+ssm_param=$(eval $cmd)
+echo $ssm_param
 echo -e "after\n"
 
-echo $ssm_param
 
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
