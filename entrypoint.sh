@@ -7,8 +7,8 @@ if [[ -z "$INPUT_AWS_REGION" ]]; then
   exit 1
 fi
 
-if [[ -z "$INPUT_AWS_ROLE_ARN" ]]; then
-  echo "Set AWS role arn (aws_role_arn) value."
+if [[ -z "$INPUT_AWS_ROLE" ]]; then
+  echo "Set AWS role arn (aws_role) value."
   exit 1
 fi
 
@@ -17,18 +17,17 @@ if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   exit 1
 fi
 
-mkdir ~/.aws
-echo -e "[default]\nrole_arn = $INPUT_AWS_ROLE_ARN\ncredential_source = Ec2InstanceMetadata" > ~/.aws/config
+TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+curl -H "X-aws-ec2-metadata-token: $TOKEN" -v "http://169.254.169.254/latest/meta-data/iam/security-credentials/$INPUT_AWS_ROLE"
 
-cat ~/.aws/config
+export AWS_DEFAULT_REGION=$INPUT_AWS_REGION
 
-region="$INPUT_AWS_REGION"
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
 simple_json="$INPUT_SIMPLE_JSON"
 
-ssm_param=$(aws --region "$region" ssm get-parameter --name "$parameter_name")
+ssm_param=$(aws ssm get-parameter --name "$parameter_name")
 
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
