@@ -21,9 +21,9 @@ simple_json="$INPUT_SIMPLE_JSON"
 echo -e "before\n"
 cmd="aws ssm get-parameter --name $parameter_name"
 echo $cmd
-ssm_param=$(eval $cmd)
-echo $ssm_param
+ssm_param=$($cmd)
 echo -e "after\n"
+echo $ssm_param
 
 
 format_var_name () {
