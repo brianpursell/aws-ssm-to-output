@@ -19,7 +19,8 @@ simple_json="$INPUT_SIMPLE_JSON"
 
 
 echo -e "before\n"
-aws ssm get-parameter --name $parameter_name --output json >> output.txt
+#aws ssm get-parameter --name $parameter_name --output json >> output.txt
+aws sts get-caller-identity --output json >> output.txt
 cat output.txt
 ssm_param='something else'
 echo -e "after\n"
