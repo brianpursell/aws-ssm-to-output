@@ -12,8 +12,6 @@ if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   exit 1
 fi
 
-export AWS_DEFAULT_REGION="us-east-1"
-
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
@@ -22,7 +20,7 @@ simple_json="$INPUT_SIMPLE_JSON"
 
 echo -e "before\n"
 #aws ssm get-parameter --name $parameter_name --output json >> output.txt
-aws sts get-caller-identity --output json --debug >> output.txt
+aws sts get-caller-identity --region us-east-1 --output json --debug >> output.txt
 cat output.txt
 ssm_param='something else'
 echo -e "after\n"
