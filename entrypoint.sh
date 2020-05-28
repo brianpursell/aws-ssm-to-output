@@ -17,7 +17,10 @@ prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
 simple_json="$INPUT_SIMPLE_JSON"
 
+
+echo -e "before\n"
 ssm_param=$(aws ssm get-parameter --name "$parameter_name")
+echo -e "after\n"
 
 echo $ssm_param
 
