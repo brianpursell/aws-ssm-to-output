@@ -28,6 +28,8 @@ fi
 
 ssm_param=$(aws "$region" ssm get-parameter --name "$parameter_name")
 
+echo $ssm_param
+
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
 }
