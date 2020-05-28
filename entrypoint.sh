@@ -17,6 +17,7 @@ if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   exit 1
 fi
 
+mkdir ~/.aws
 echo -e "[default]\nrole_arn = $INPUT_AWS_ROLE_ARN\ncredential_source = Ec2InstanceMetadata" > ~/.aws/config
 
 cat ~/.aws/config
