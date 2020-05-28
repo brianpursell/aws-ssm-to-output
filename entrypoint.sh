@@ -12,6 +12,8 @@ if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   exit 1
 fi
 
+export AWS_DEFAULT_REGION="us-east-1"
+
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
