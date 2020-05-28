@@ -7,20 +7,10 @@ if [[ -z "$INPUT_AWS_REGION" ]]; then
   exit 1
 fi
 
-if [[ -z "$INPUT_AWS_ROLE" ]]; then
-  echo "Set AWS role arn (aws_role) value."
-  exit 1
-fi
-
 if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   echo "Set SSM parameter name (ssm_parameter) value."
   exit 1
 fi
-
-TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
-curl -H "X-aws-ec2-metadata-token: $TOKEN" -v "http://169.254.169.254/latest/meta-data/iam/security-credentials/$INPUT_AWS_ROLE"
-
-export AWS_DEFAULT_REGION=$INPUT_AWS_REGION
 
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
