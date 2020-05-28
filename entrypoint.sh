@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 if [[ -z "$INPUT_AWS_REGION" ]]; then
   echo "Set AWS region (aws_region) value."
@@ -19,9 +19,9 @@ simple_json="$INPUT_SIMPLE_JSON"
 
 
 echo -e "before\n"
-cmd="aws ssm get-parameter --name $parameter_name --output json"
-echo $cmd
-ssm_param=$($cmd)
+aws ssm get-parameter --name $parameter_name --output json >> output.txt
+cat output.txt
+ssm_param='something else'
 echo -e "after\n"
 echo $ssm_param
 
