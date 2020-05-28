@@ -9,16 +9,11 @@ set -e
 #
 #echo $AWS_REGION
 
-if [[ -z "$INPUT_PARAMETER_NAME" ]]; then
-  echo "Set SSM parameter name (parameter_name) value."
+if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
+  echo "Set SSM parameter name (ssm_parameter) value."
   exit 1
 fi
 
-printenv | grep ssm_param_ | while read -r line ; do
-    echo "Processing $line"
-    # your code goes here
-done
- 
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"

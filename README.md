@@ -58,7 +58,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          parameter_name: 'my_parameter_name'
+          ssm_parameter: 'my_parameter_name'
 ```
 
 Example above will set environmental variable `AWS_SSM_MY_PARAMETER_NAME` with value from the AWS SSM parameter itself.
@@ -84,7 +84,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          parameter_name: 'my_parameter_name'
+          ssm_parameter: 'my_parameter_name'
           prefix: FOO_
 ```
 
@@ -110,7 +110,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          parameter_name: 'my_json_parameter'
+          ssm_parameter: 'my_json_parameter'
           simple_json: true
 ```
 
@@ -144,7 +144,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         with:
-          parameter_name: 'my_json_parameter'
+          ssm_parameter: 'my_json_parameter'
           jq_filter: '.db[]|select(.default).host .db[]|select(.default).port'
           prefix: DB_
 ```
