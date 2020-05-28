@@ -2,12 +2,12 @@
 
 set -e
 
-if [[ -z "$AWS_REGION" ]] || [[ -z "$AWS_ACCESS_KEY_ID" ]] || [[ -z "$AWS_SECRET_ACCESS_KEY" ]]; then
-  echo "Ensure that all environmental variables (AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are set!"
-  exit 1
-fi
-
-echo $AWS_REGION
+#if [[ -z "$AWS_REGION" ]] || [[ -z "$AWS_ACCESS_KEY_ID" ]] || [[ -z "$AWS_SECRET_ACCESS_KEY" ]]; then
+#  echo "Ensure that all environmental variables (AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are set!"
+#  exit 1
+#fi
+#
+#echo $AWS_REGION
 
 if [[ -z "$INPUT_PARAMETER_NAME" ]]; then
   echo "Set SSM parameter name (parameter_name) value."
@@ -18,14 +18,20 @@ printenv | grep ssm_param_ | while read -r line ; do
     echo "Processing $line"
     # your code goes here
 done
-
-
-region="${INPUT_AWS_REGION:-$AWS_REGION}"
+ 
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
 simple_json="$INPUT_SIMPLE_JSON"
-ssm_param=$(aws2 --region "$region" ssm get-parameter --name "$parameter_name")
+
+if [ -z "$INPUT_AWS_REGION" ]
+then
+  region="--region $INPUT_AWS_REGION"
+else
+  region=""
+fi
+
+ssm_param=$(aws2 "$region" ssm get-parameter --name "$parameter_name")
 
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
