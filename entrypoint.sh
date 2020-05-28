@@ -2,34 +2,32 @@
 
 set -e
 
-#if [[ -z "$AWS_REGION" ]] || [[ -z "$AWS_ACCESS_KEY_ID" ]] || [[ -z "$AWS_SECRET_ACCESS_KEY" ]]; then
-#  echo "Ensure that all environmental variables (AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY) are set!"
-#  exit 1
-#fi
-#
-#echo $AWS_REGION
+if [[ -z "$INPUT_AWS_REGION" ]]; then
+  echo "Set AWS region (aws_region) value."
+  exit 1
+fi
+
+if [[ -z "$INPUT_AWS_ROLE_ARN" ]]; then
+  echo "Set AWS role arn (aws_role_arn) value."
+  exit 1
+fi
 
 if [[ -z "$INPUT_SSM_PARAMETER" ]]; then
   echo "Set SSM parameter name (ssm_parameter) value."
   exit 1
 fi
 
+echo -e "[default]\nrole_arn = $INPUT_AWS_ROLE_ARN\ncredential_source = Ec2InstanceMetadata" > ~/.aws/config
+
+cat ~/.aws/config
+
+region="$INPUT_AWS_REGION"
 parameter_name="$INPUT_SSM_PARAMETER"
 prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
 simple_json="$INPUT_SIMPLE_JSON"
 
-if [ -z "$INPUT_AWS_REGION" ]
-then
-  region="--region $INPUT_AWS_REGION"
-else
-  region=""
-fi
-
-echo "$ssm_param\n"
-echo "$parameter_name\n"
-
-ssm_param=$(aws "$region" ssm get-parameter --name "$parameter_name")
+ssm_param=$(aws --region "$region" ssm get-parameter --name "$parameter_name")
 
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
