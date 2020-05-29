@@ -48,3 +48,4 @@ else
   echo "value: $var_value"
   echo ::set-output name="$(format_var_name "$var_name")"::"$var_value"
 fi
+
