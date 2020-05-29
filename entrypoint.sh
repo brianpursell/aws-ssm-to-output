@@ -44,5 +44,6 @@ if [ -n "$jq_filter" ] || [ -n "$simple_json" ]; then
 else
   var_name=$(echo "$ssm_param" | jq -r '.Parameter.Name' | awk -F/ '{print $NF}')
   var_value=$(echo "$ssm_param" | jq -r '.Parameter.Value')
+  echo "value: $var_value"
   echo ::set-output name="$(format_var_name "$var_name")"::"$var_value"
 fi
