@@ -18,6 +18,9 @@ inputs:
   jq_filter:
     description: 'Custom jq filter(s).'
     required: false
+  from_output:
+    description: 'temp'
+    required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
