@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -e
+set -e
 
 if [[ -z "$INPUT_AWS_REGION" ]]; then
   echo "Set AWS region (aws_region) value."
@@ -17,15 +17,9 @@ prefix="${INPUT_PREFIX:-aws_ssm_}"
 jq_filter="$INPUT_JQ_FILTER"
 simple_json="$INPUT_SIMPLE_JSON"
 
+printenv
 
-echo -e "before\n"
-#aws ssm get-parameter --name $parameter_name --output json >> output.txt
-aws sts get-caller-identity --output json --debug >> output.txt
-cat output.txt
-ssm_param='something else'
-echo -e "after\n"
-echo $ssm_param
-
+ssm_param=$("aws ssm get-parameter --name $parameter_name")
 
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
