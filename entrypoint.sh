@@ -21,8 +21,6 @@ printenv
 
 ssm_param=$(aws ssm get-parameter --region "$INPUT_AWS_REGION" --name "$parameter_name")
 
-echo $ssm_param
-
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:upper:]" "[:lower:]"
 }
@@ -44,8 +42,6 @@ if [ -n "$jq_filter" ] || [ -n "$simple_json" ]; then
 else
   var_name=$(echo "$ssm_param" | jq -r '.Parameter.Name' | awk -F/ '{print $NF}')
   var_value=$(echo "$ssm_param" | jq -r '.Parameter.Value')
-  echo $(format_var_name "$var_name")
-  echo "value: $var_value"
   echo ::set-output name="$(format_var_name "$var_name")"::"$var_value"
 fi
 
