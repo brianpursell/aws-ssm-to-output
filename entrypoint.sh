@@ -21,6 +21,8 @@ printenv
 
 ssm_param=$(aws ssm get-parameter --region "$INPUT_AWS_REGION" --name "$parameter_name")
 
+echo $ssm_param
+
 format_var_name () {
   echo "$1" | awk -v prefix="$prefix" -F. '{print prefix $NF}' | tr "[:lower:]" "[:upper:]"
 }
